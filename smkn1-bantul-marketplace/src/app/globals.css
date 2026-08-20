@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+:root {
+  /* BLUD SMKN 1 Bantul Color Palette */
+  --primary-navy: #0F2C59;
+  --secondary-amber: #F8DE22;
+  --accent-gold: #C9A063;
+  --neutral-light: #F8F9FA;
+  --neutral-charcoal: #1E293B;
+  
+  --background: #F8F9FA;
+  --foreground: #1E293B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary-navy);
+  --color-secondary: var(--secondary-amber);
+  --color-accent: var(--accent-gold);
+  --font-sans: 'Inter', 'Plus Jakarta Sans', var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800&display=swap');
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+}
+
+/* Custom utility classes for BLUD theme */
+.bg-blud-primary {
+  background-color: var(--primary-navy);
+}
+
+.bg-blud-secondary {
+  background-color: var(--secondary-amber);
+}
+
+.bg-blud-accent {
+  background-color: var(--accent-gold);
+}
+
+.text-blud-primary {
+  color: var(--primary-navy);
+}
+
+.text-blud-secondary {
+  color: var(--secondary-amber);
+}
+
+.text-blud-accent {
+  color: var(--accent-gold);
+}
+
+.btn-primary {
+  @apply bg-[#0F2C59] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1a3d7a] transition-all duration-300 shadow-md hover:shadow-lg;
+}
+
+.btn-secondary {
+  @apply bg-[#F8DE22] text-[#0F2C59] px-6 py-3 rounded-lg font-semibold hover:bg-[#f0d61b] transition-all duration-300 shadow-md hover:shadow-lg;
+}
+
+.card-blud {
+  @apply bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300;
+}
+
