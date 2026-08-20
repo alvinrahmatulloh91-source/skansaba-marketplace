@@ -60,6 +60,7 @@ model User {
 model Major {
   id          String             @id @default(cuid())
   name        String
+  code        String             @unique
   slug        String             @unique
   description String?
   products    ProductService[]
@@ -68,6 +69,7 @@ model Major {
   updatedAt   DateTime           @updatedAt
 
   @@index([slug])
+  @@index([code])
 }
 
 model ProductService {
@@ -80,6 +82,7 @@ model ProductService {
   type        ProductType  @default(PRODUCT)
   galleryUrls String[]
   bludCode    String?
+  stock       Int          @default(0)
   isActive    Boolean      @default(true)
   orderItems  OrderItem[]
   createdAt   DateTime     @default(now())
@@ -88,6 +91,7 @@ model ProductService {
   @@index([majorId])
   @@index([type])
   @@index([isActive])
+  @@index([bludCode])
 }
 
 model Order {
