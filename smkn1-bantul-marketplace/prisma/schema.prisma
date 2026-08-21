@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  SUPER_ADMIN_BLUD
+  ADMIN_JURUSAN
+  BUYER
+}
+
+enum ProductType {
+  PRODUCT
+  SERVICE
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PartnershipStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  IN_PROGRESS
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  passwordHash String
+  role      Role     @default(BUYER)
+  majorId   String?
+  major     Major?   @relation(fields: [majorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+model Major {
+  id          String           @id @default(cuid())
+  name        String
+  code        String           @unique
+  slug        String           @unique
+  description String?
+  products    ProductService[]
+  users       User[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([slug])
+}
+
+model ProductService {
+  id          String      @id @default(cuid())
+  majorId     String
+  major       Major       @relation(fields: [majorId], references: [id])
+  title       String
+  description String?
+  price       Decimal     @db.Decimal(10, 2)
+  type        ProductType
+  bludCode    String      @unique
+  stock       Int         @default(0)
+  imageUrls   String[]
+  isActive    Boolean     @default(true)
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([majorId])
+  @@index([type])
+  @@index([isActive])
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  totalAmount   Decimal       @db.Decimal(10, 2)
+  paymentStatus PaymentStatus @default(UNPAID)
+  orderStatus   OrderStatus   @default(PENDING)
+  items         OrderItem[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([paymentStatus])
+  @@index([orderStatus])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id        String         @id @default(cuid())
+  orderId   String
+  order     Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   ProductService @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Decimal        @db.Decimal(10, 2)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model B2BPartnership {
+  id             String            @id @default(cuid())
+  companyName    String
+  contactPerson  String
+  email          String
+  phone          String?
+  proposalDetails String
+  status         PartnershipStatus @default(PENDING)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([status])
+}
